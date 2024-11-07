@@ -1,1 +1,1 @@
-pub mod skill_trees;
+pub mod skill_tree_api;

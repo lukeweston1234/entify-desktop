@@ -10,9 +10,10 @@ pub struct SkillTree {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SkillTreeNode {
-    id: i32,
-    title: String,
-    parent_id: Option<i32>,
-    markdown: String,
-    depth: Option<i32>
+    pub id: i32,
+    pub title: String,
+    pub parent_id: Option<i32>,
+    pub skill_tree_id: i32,
+    pub markdown: String,
+    pub depth: Option<i32>
 }

@@ -1,43 +1,27 @@
+use api::skill_tree_api::get_skill_tree_nodes;
+use db::init::initialize_database;
 use tokio_rusqlite::Connection;
 use std::error::Error;
-use std::env::current_dir;
 
-mod api;
 mod db;
+mod api;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    println!("{:?}", current_dir());
-    let conn = Connection::open("./db/app.db").await?;
 
-    initialize_database(&conn).await;
+    let conn = Connection::open("./db/app.db")
+        .await
+        .expect("Could not open db");
+
+    initialize_database(&conn).await.expect("Could not initialize db");
+
+    let nodes = get_skill_tree_nodes(&conn, 1).await;
+
+    nodes.into_iter().for_each(|x| println!("{:?}", x));
 
     Ok(())
 }
 
-async fn initialize_database(conn: &Connection){
-    let _ = conn.call(|conn| {
-        let _ = conn.execute(
-            "
-            CREATE TABLE IF NOT EXISTS skill_trees (
-                id integer primary key autoincrement,
-                title text not null,
-                description text
-            );
-            ",
-            []
-        );
-        let _ = conn.execute(
-            "
-            CREATE TABLE IF NOT EXISTS skill_tree_node (
-                id integer primary key autoincrement,
-                skill_tree_id integer references skill_trees not null,
-                parent_id integer references skill_tree_node,
-                markdown text
-            );
-            ",
-            []
-        );
-        Ok(())
-    }).await;
-} 
+
+
+
