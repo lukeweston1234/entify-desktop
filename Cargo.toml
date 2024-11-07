@@ -1,0 +1,9 @@
+[package]
+name = "tokio-md-sqlite"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = {version = "1.41.1", features=["full"]}
+serde = { version = "1.0.2", features=["derive"]}
+tokio-rusqlite = {version = "0.6.0", features=["bundled"]}
